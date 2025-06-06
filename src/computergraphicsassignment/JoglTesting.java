@@ -8,6 +8,8 @@ package computergraphicsassignment;
 import com.jogamp.opengl.*;
 import com.jogamp.opengl.glu.GLU;
 import com.jogamp.opengl.glu.GLUquadric;
+import computergraphicsassignment.component.EarthMoon;
+import computergraphicsassignment.component.Rocket;
 import computergraphicsassignment.component.Sun;
 
 public class JoglTesting implements GLEventListener {
@@ -16,11 +18,18 @@ public class JoglTesting implements GLEventListener {
     private GLU glu = new GLU();
     private Sun sun;
 //    private Mercury mercury;
-
+    
+    //hzw
+    private EarthMoon earthMoon;
+    private Rocket rocket;
+    
     @Override
     public void init(GLAutoDrawable drawable) {
         GL2 gl = drawable.getGL().getGL2();
-
+        earthMoon = new EarthMoon(16f, 1.0f, 0.5f, 2.0f);//hzw
+        earthMoon.loadTextures(gl);
+        rocket = new Rocket();
+        
         // Basic settings
         gl.glClearColor(0f, 0f, 0f, 1f);
         gl.glEnable(GL2.GL_DEPTH_TEST);
@@ -64,7 +73,7 @@ public class JoglTesting implements GLEventListener {
         float[][] planets = {
             {0.38f, 8f, 4f, 0.5f, 0.5f},  // Mercury
             {0.95f, 12f, 3f, 0.9f, 0.4f}, // Venus
-            {1.0f, 16f, 0f, 0f, 1f},      // Earth
+//            {1.0f, 16f, 0f, 0f, 1f},      // Earth - hzw
             {0.53f, 20f, 1f, 0.3f, 0.3f}, // Mars
             {2.0f, 26f, 1f, 0.6f, 0.2f},  // Jupiter
             {1.6f, 32f, 0.9f, 0.9f, 0.5f},// Saturn
@@ -78,7 +87,11 @@ public class JoglTesting implements GLEventListener {
             float r = planets[i][2], g = planets[i][3], b = planets[i][4];
             drawRevolvingPlanet(gl, radius, distance, r, g, b, angle * (i + 1));
         }
-
+            earthMoon.update();//hzw
+            earthMoon.draw(gl);
+            rocket.update();
+            rocket.draw(gl);
+            
         angle += 0.2f;
     }
 
@@ -111,5 +124,18 @@ public class JoglTesting implements GLEventListener {
         gl.glRotatef(angle * 2, 0, 1, 0);
         drawPlanet(gl, 0, 0, 0, radius, r, g, b);
         gl.glPopMatrix();
+    }
+    
+    //hzw
+    public void rocketMove(String direction) {
+        if (rocket == null) return;
+        switch (direction) {
+            case "UP" -> rocket.moveUp();
+            case "DOWN" -> rocket.moveDown();
+            case "LEFT" -> rocket.moveLeft();
+            case "RIGHT" -> rocket.moveRight();
+            case "FORWARD" -> rocket.moveForward();
+            case "BACKWARD" -> rocket.moveBackward();
+        }
     }
 }

@@ -9,6 +9,9 @@ import com.jogamp.opengl.GLProfile;
 import com.jogamp.opengl.awt.GLCanvas;
 import com.jogamp.opengl.util.FPSAnimator;
 import javax.swing.JFrame;
+// animate rocket
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 /**
  *
@@ -19,6 +22,7 @@ public class ComputerGraphicsAssignment {
     /**
      * @param args the command line arguments
      */
+    
     public static void main(String[] args) {
         // 1. Setup OpenGL profile
         GLProfile profile = GLProfile.get(GLProfile.GL2);
@@ -26,8 +30,29 @@ public class ComputerGraphicsAssignment {
 
         // 2. Create canvas with capabilities
         GLCanvas canvas = new GLCanvas(capabilities);
-        canvas.addGLEventListener(new JoglTesting()); // Attach your scene class
+        //hzw
+        JoglTesting jogl = new JoglTesting();
+        canvas.addGLEventListener(jogl); 
+        canvas.addKeyListener(new KeyListener() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                switch (e.getKeyCode()) {
+                    case KeyEvent.VK_W -> jogl.rocketMove("UP");
+                    case KeyEvent.VK_S -> jogl.rocketMove("DOWN");
+                    case KeyEvent.VK_A -> jogl.rocketMove("LEFT");
+                    case KeyEvent.VK_D -> jogl.rocketMove("RIGHT");
+                    case KeyEvent.VK_UP -> jogl.rocketMove("FORWARD");
+                    case KeyEvent.VK_DOWN -> jogl.rocketMove("BACKWARD");
+                }
+            }
 
+            @Override public void keyReleased(KeyEvent e) {}
+            @Override public void keyTyped(KeyEvent e) {}
+        });
+        canvas.setFocusable(true);
+        canvas.requestFocus();
+        //
+        
         // 3. Create window (JFrame)
         JFrame frame = new JFrame("Solar System Simulation");
         frame.setSize(1000, 700);
