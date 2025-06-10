@@ -41,39 +41,6 @@ public class Satellite implements GLEventListener {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
         
-        // Add keyboard controls for camera
-        frame.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                switch (e.getKeyCode()) {
-                    case KeyEvent.VK_W:
-                        satellite.cameraZ -= satellite.cameraSpeed;
-                        break;
-                    case KeyEvent.VK_S:
-                        satellite.cameraZ += satellite.cameraSpeed;
-                        break;
-                    case KeyEvent.VK_A:
-                        satellite.cameraX -= satellite.cameraSpeed;
-                        break;
-                    case KeyEvent.VK_D:
-                        satellite.cameraX += satellite.cameraSpeed;
-                        break;
-                    case KeyEvent.VK_UP:
-                        satellite.cameraY += satellite.cameraSpeed;
-                        break;
-                    case KeyEvent.VK_DOWN:
-                        satellite.cameraY -= satellite.cameraSpeed;
-                        break;
-                    case KeyEvent.VK_ESCAPE:
-                        System.exit(0);
-                        break;
-                }
-                canvas.repaint();
-            }
-        });
-        
-        frame.setVisible(true);
-
         FPSAnimator animator = new FPSAnimator(canvas, 60);
         animator.start();
     }
