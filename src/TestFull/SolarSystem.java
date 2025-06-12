@@ -126,6 +126,7 @@ public class SolarSystem implements GLEventListener {
             
             earth.updateSatellite();
             earth.renderSatellite(gl, 0.065f);
+
         } else {
             // Default camera
             gl.glTranslatef(0f, 0f, -70f);
