@@ -7,31 +7,75 @@ package TestFull;
 import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.glu.GLU;
 import com.jogamp.opengl.glu.GLUquadric;
+import computergraphicsassignment.component.Rocket;
 
 /**
  *
  * @author Asus
  */
-public class Earth extends Planets {
+public class Earth extends Planet {
+
+    // Position of Earth in orbit
+    private float earthX, earthZ, earthY;
 
     private Moon moon;
+    private Rocket rocket;
 
     public Earth(float radius, float distanceFromCenter, float rotationSpeed) {
-        super("/images/earth.jpg", radius, distanceFromCenter, rotationSpeed, Planets.SelfRotateAxis.Z_Axis);
+        super("/images/earth.jpg", radius, distanceFromCenter, rotationSpeed, Planet.SelfRotateAxis.Z_Axis);
         moon = new Moon(0.5f, radius + 0.8f, 5f);
+        rocket = new Rocket();
+        // Position of Earth in orbit
+        earthX = (float) (Math.cos(Math.toRadians(orbitalAngle)) * distanceFromCenter);
+        earthZ = (float) (Math.sin(Math.toRadians(orbitalAngle)) * distanceFromCenter);
+        earthY = 0f;
         moon.orbitalSpeed = this.orbitalSpeed * 6;
     }
-    
+
     @Override
     public void updateRotation() {
         super.updateRotation();
-
 //        int axis = rotateAxis == SelfRotateAxis.Y_Axis ? 1 : 2;
 //        rotationAngles[axis] += rotationSpeed; // Y-axis rotation
-        
-//        orbitalAngle += orbitalSpeed;
+//
+//        orbitalAngle -= orbitalSpeed;
+//        earthX = (float) (Math.cos(Math.toRadians(orbitalAngle)) * distanceFromCenter);
+//        earthZ = (float) (Math.sin(Math.toRadians(orbitalAngle)) * distanceFromCenter);
 
+        moon.orbitalSpeed = this.orbitalSpeed * 6;
         moon.updateRotation();
+    }
+
+    public Rocket getRocket() {
+        return rocket;
+    }
+
+    public void updateMoon() {
+        moon.orbitalSpeed = this.orbitalSpeed * 2;
+        moon.updateRotation();
+    }
+    
+    public void updateRocket() {
+        rocket.update();
+    }
+    
+    public void renderRocket(GL2 gl, float scaleFactor) {
+        gl.glPushMatrix();
+
+        // Move Earth to position
+        // Y for offset above Earth's surface
+        gl.glTranslatef(X, Y + radius + 1.0f, Z); 
+        
+        // Scale the rocket
+        gl.glScalef(scaleFactor, scaleFactor, scaleFactor);
+        
+        // Render rocket
+        rocket.draw(gl);
+        
+        // Reset color to avoid other component being colored
+        gl.glColor3f(1f, 1f, 1f);
+
+        gl.glPopMatrix();
     }
 
     @Override
@@ -43,8 +87,10 @@ public class Earth extends Planets {
         gl.glPushMatrix();
 
         // Orbit around the Sun
-        gl.glRotatef(orbitalAngle, 0f, 1f, 0f); // Orbital angle
-        gl.glTranslatef(distanceFromCenter, 0f, 0f); // Orbital radius
+//        gl.glRotatef(orbitalAngle, 0f, 1f, 0f); // Orbital angle
+//        gl.glTranslatef(distanceFromCenter, 0f, 0f); // Orbital radius
+        gl.glTranslatef(X, Y, Z); // Move Earth to position
+//        System.out.println(orbitalAngle+" "+earthX+" "+earthZ);
 
         // Self-rotation
         gl.glRotatef(rotationAngles[0], 1f, 0f, 0f);
@@ -68,31 +114,29 @@ public class Earth extends Planets {
         if (texture != null) {
             texture.disable(gl);
         }
-        
-//        gl.glRotatef(-rotationAngles[0], 1f, 0f, 0f);
-//        gl.glRotatef(-rotationAngles[1], 0f, 1f, 0f);
-//        gl.glRotatef(-rotationAngles[2], 0f, 0f, 1f);
-        
         glu.gluDeleteQuadric(quadric);
-        
         gl.glPopMatrix();
-        
+
+        // Add a small sphere to make moon follow Earth's orbit around sun
         gl.glPushMatrix();
 
         // Orbit around the Sun
-        gl.glRotatef(orbitalAngle, 0f, 1f, 0f); // Orbital angle
-        gl.glTranslatef(distanceFromCenter, 0f, 0f); // Orbital radius
+        gl.glTranslatef(X, Y, Z); // Move Earth to position
 
         glu.gluSphere(quadric, 0.1f, 64, 64);
         
-//        gl.glRotatef(-rotationAngles[0], 1f, 0f, 0f);
-//        gl.glRotatef(-rotationAngles[1], 0f, 1f, 0f);
-//        gl.glRotatef(-rotationAngles[2], 0f, 0f, 1f);
-        
         glu.gluDeleteQuadric(quadric);
-        
+
         moon.render(gl);
         
+//        gl.glPushMatrix();
+//        
+//        gl.glTranslatef(0f, radius + 1.0f, 0f); // Offset above Earth’s surface
+//        gl.glScalef(0.15f, 0.15f, 0.15f);
+//        rocket.draw(gl); // Render the rocket relative to Earth
+//        gl.glColor3f(1f, 1f, 1f); // Default white or whatever Earth needs
+//        gl.glPopMatrix();
+
         gl.glPopMatrix();
     }
 }

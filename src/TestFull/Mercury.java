@@ -10,9 +10,9 @@ import com.jogamp.opengl.GL2;
  *
  * @author Asus
  */
-public class Mercury extends Planets {
+public class Mercury extends Planet {
 
     public Mercury(float radius, float distanceFromCenter, float rotationSpeed) {
-        super("/images/mercury.jpg", radius, distanceFromCenter, rotationSpeed, Planets.SelfRotateAxis.Z_Axis);
+        super("/images/mercury.jpg", radius, distanceFromCenter, rotationSpeed, Planet.SelfRotateAxis.Z_Axis);
     }
 }

@@ -12,10 +12,11 @@ import com.jogamp.opengl.glu.GLUquadric;
  *
  * @author Asus
  */
-public class Sun extends Planets{
+public class Sun extends Planet{
 
     public Sun(float radius, float distanceFromCenter, float rotationSpeed) {
-        super("/images/sun.jpg", radius, distanceFromCenter, rotationSpeed);
+        super("/images/sun.jpg", radius, distanceFromCenter, rotationSpeed, Planet.SelfRotateAxis.Z_Axis);
+        this.orbitalSpeed = 0f;
     }
     
     @Override
@@ -25,6 +26,11 @@ public class Sun extends Planets{
         }
         
         gl.glPushMatrix();
+        
+        // Self-rotation
+        gl.glRotatef(-90, 1f, 0f, 0f);
+        gl.glRotatef(rotationAngles[1], 0f, 1f, 0f);
+        gl.glRotatef(rotationAngles[2], 0f, 0f, 1f);
 
         // Draw the planet
         GLU glu = new GLU();
@@ -49,9 +55,9 @@ public class Sun extends Planets{
         gl.glPopMatrix();
     }
 
-    @Override
-    public void updateRotation() {
-    
-    }
+//    @Override
+//    public void updateRotation() {
+//    
+//    }
     
 }

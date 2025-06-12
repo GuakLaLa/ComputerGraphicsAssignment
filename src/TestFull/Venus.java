@@ -8,9 +8,9 @@ package TestFull;
  *
  * @author Asus
  */
-public class Venus extends Planets {
+public class Venus extends Planet {
     public Venus(float radius, float distanceFromCenter, float rotationSpeed) {
-        super("/images/venus.jpg", radius, distanceFromCenter, rotationSpeed, Planets.SelfRotateAxis.Z_Axis);
+        super("/images/venus.jpg", radius, distanceFromCenter, rotationSpeed, Planet.SelfRotateAxis.Z_Axis);
         rotationAngles = new float[] {90, 0, 0};
     }
 }

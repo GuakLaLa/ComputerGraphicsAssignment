@@ -15,7 +15,7 @@ import java.io.InputStream;
  *
  * @author Asus
  */
-public class Planets {
+public class Planet {
 
     protected class SelfRotateAxis {
 
@@ -23,6 +23,7 @@ public class Planets {
         public static final char Z_Axis = 'Z';
     }
 
+    protected float X, Y, Z;
     protected float radius, distanceFromCenter;
     protected float rotationSpeed;
     protected float orbitalAngle = 30f;
@@ -40,28 +41,22 @@ public class Planets {
 
     public void updateRotation() {
         updateRotationDefault();
-    };
+    }
 
-    public Planets(String texturePath, float radius, float distanceFromCenter, float rotationSpeed) {
+    public Planet(String texturePath, float radius, float distanceFromCenter, float rotationSpeed) {
         this.radius = radius;
         this.distanceFromCenter = distanceFromCenter;
         this.rotationSpeed = rotationSpeed;
         this.texturePath = texturePath;
 
-//        try (InputStream stream = getClass().getResourceAsStream(texturePath)) {
-//            texture = TextureIO.newTexture(stream, true, "jpg");
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//        quadric = glu.gluNewQuadric();
-//        glu.gluQuadricTexture(quadric, true);
+        calculatePosition();
+        Y = 0f;
     }
 
-    public Planets(String texturePath, float radius, float distanceFromCenter, float rotationSpeed, char rotateAxis) {
+    public Planet(String texturePath, float radius, float distanceFromCenter, float rotationSpeed, char rotateAxis) {
         this(texturePath, radius, distanceFromCenter, rotationSpeed);
         this.rotateAxis = rotateAxis;
-        if (rotateAxis == Planets.SelfRotateAxis.Z_Axis) {
+        if (rotateAxis == Planet.SelfRotateAxis.Z_Axis) {
             this.rotationAngles = new float[]{-90, 0, 0};
         }
     }
@@ -74,12 +69,22 @@ public class Planets {
             return null;
         }
     }
+    
+    protected void calculatePosition() {
+        X = (float) (Math.cos(Math.toRadians(orbitalAngle)) * distanceFromCenter) * 1.2f;
+        Z = (float) (Math.sin(Math.toRadians(orbitalAngle)) * distanceFromCenter) * 1.2f;
+    }
+    
+    public float [] getPosition() {
+        return new float[] {X, Y, Z};
+    }
 
     protected void updateRotationDefault() {
         int axis = rotateAxis == SelfRotateAxis.Y_Axis ? 1 : 2;
         rotationAngles[axis] += rotationSpeed; // Y-axis rotation
-        
-        orbitalAngle += orbitalSpeed;
+
+        orbitalAngle -= orbitalSpeed;
+        calculatePosition();
     }
 
     protected void renderDefault(GL2 gl) {
@@ -90,8 +95,7 @@ public class Planets {
         gl.glPushMatrix();
 
         // Orbit around the Sun
-        gl.glRotatef(orbitalAngle, 0f, 1f, 0f); // Orbital angle
-        gl.glTranslatef(distanceFromCenter, 0f, 0f); // Orbital radius
+        gl.glTranslatef(X, Y, Z); // Move planet to position
 
         // Self-rotation
         gl.glRotatef(rotationAngles[0], 1f, 0f, 0f);
