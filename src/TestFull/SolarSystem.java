@@ -120,6 +120,9 @@ public class SolarSystem implements GLEventListener {
             // Update and render rocket with 15% of original size
             earth.updateRocket();
             earth.renderRocket(gl, 0.15f);
+            
+            earth.updateAstronaut();
+            earth.renderAstronaut(gl, 0.7f);
         } else {
             // Default camera
             gl.glTranslatef(0f, 0f, -70f);

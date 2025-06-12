@@ -20,11 +20,13 @@ public class Earth extends Planet {
 
     private Moon moon;
     private Rocket rocket;
+    private Astronaut astronaut;
 
     public Earth(float radius, float distanceFromCenter, float rotationSpeed) {
         super("/images/earth.jpg", radius, distanceFromCenter, rotationSpeed, Planet.SelfRotateAxis.Z_Axis);
         moon = new Moon(0.5f, radius + 0.8f, 5f);
         rocket = new Rocket();
+        astronaut = new Astronaut();
         // Position of Earth in orbit
         earthX = (float) (Math.cos(Math.toRadians(orbitalAngle)) * distanceFromCenter);
         earthZ = (float) (Math.sin(Math.toRadians(orbitalAngle)) * distanceFromCenter);
@@ -59,6 +61,10 @@ public class Earth extends Planet {
         rocket.update();
     }
     
+    public void updateAstronaut() {
+        astronaut.update(0.05f);
+    }
+    
     public void renderRocket(GL2 gl, float scaleFactor) {
         gl.glPushMatrix();
 
@@ -71,6 +77,26 @@ public class Earth extends Planet {
         
         // Render rocket
         rocket.draw(gl);
+        
+        // Reset color to avoid other component being colored
+        gl.glColor3f(1f, 1f, 1f);
+
+        gl.glPopMatrix();
+    }
+    
+    public void renderAstronaut(GL2 gl, float scaleFactor) {
+        gl.glPushMatrix();
+
+        // Move Earth to position
+        // Y for offset above Earth's surface
+        gl.glTranslatef(X + 5f, Y + radius + 2f, Z + 1f);
+        gl.glRotatef(120, 0f, 1f, 0f);
+        
+        // Scale the astronaut
+        gl.glScalef(scaleFactor, scaleFactor, scaleFactor);
+        
+        // Render astronaut
+        astronaut.render(gl);
         
         // Reset color to avoid other component being colored
         gl.glColor3f(1f, 1f, 1f);
