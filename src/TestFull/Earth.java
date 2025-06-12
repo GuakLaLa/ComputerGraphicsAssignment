@@ -21,12 +21,15 @@ public class Earth extends Planet {
     private Moon moon;
     private Rocket rocket;
     private Astronaut astronaut;
+    private Satellite satellite;
 
     public Earth(float radius, float distanceFromCenter, float rotationSpeed) {
         super("/images/earth.jpg", radius, distanceFromCenter, rotationSpeed, Planet.SelfRotateAxis.Z_Axis);
         moon = new Moon(0.5f, radius + 0.8f, 5f);
         rocket = new Rocket();
         astronaut = new Astronaut();
+        satellite = new Satellite();
+      
         // Position of Earth in orbit
         earthX = (float) (Math.cos(Math.toRadians(orbitalAngle)) * distanceFromCenter);
         earthZ = (float) (Math.sin(Math.toRadians(orbitalAngle)) * distanceFromCenter);
@@ -104,6 +107,102 @@ public class Earth extends Planet {
         gl.glPopMatrix();
     }
 
+    public Rocket getRocket() {
+        return rocket;
+    }
+
+    public void updateMoon() {
+        moon.orbitalSpeed = this.orbitalSpeed * 2;
+        moon.updateRotation();
+    }
+
+    public void updateRocket() {
+        rocket.update();
+    }
+
+    public void updateSatellite() {
+        satellite.update();
+    }
+
+    public void updateAstronaut() {
+        astronaut.update(0.05f);
+    }
+
+    public void renderRocket(GL2 gl, float scaleFactor) {
+        gl.glPushMatrix();
+
+        // Move Earth to position
+        // Y for offset above Earth's surface
+        gl.glTranslatef(X, Y + radius + 0.5f, Z);
+
+        // Scale the rocket
+        gl.glScalef(scaleFactor, scaleFactor, scaleFactor);
+
+        // Render rocket
+        rocket.draw(gl);
+
+        // Reset color to avoid other component being colored
+        gl.glColor3f(1f, 1f, 1f);
+
+        gl.glPopMatrix();
+    }
+
+    public void renderSatellite(GL2 gl, float scaleFactor) {
+        gl.glPushMatrix();
+
+        // Move Earth to position
+        // Y for offset above Earth's surface
+        
+        gl.glTranslatef(X + 2f, Y + 4f, Z + 3.5f);
+        gl.glRotatef(180, 0f, 1f, 0f);
+
+        gl.glPushMatrix();
+
+        gl.glRotatef(-50, 1f, 0f, 0f);
+        gl.glRotatef(200, 0f, 1f, 0f);
+        gl.glRotatef(-180, 0f, 0f, 1f);
+
+        // Scale the rocket
+        gl.glScalef(scaleFactor, scaleFactor, scaleFactor);
+
+        // Render rocket
+        satellite.render(gl);
+
+        // Reset color to avoid other component being colored
+        gl.glColor3f(1f, 1f, 1f);
+
+        gl.glPopMatrix();
+        gl.glPopMatrix();
+
+    }
+
+    public void renderAstronaut(GL2 gl, float scaleFactor) {
+        gl.glPushMatrix();
+
+        // Move Earth to position
+        // Y for offset above Earth's surface
+//        gl.glTranslatef(0, 0, 0);
+        gl.glTranslatef(X, Y + radius + 0.3f, Z);
+
+        gl.glPushMatrix();
+
+//        gl.glRotatef(-30, 1f, 0f, 0f);
+        gl.glRotatef(-20, 0f, 1f, 0f);
+        gl.glRotatef(-50, 0f, 0f, 1f);
+
+        // Scale the astronaut
+        gl.glScalef(scaleFactor, scaleFactor, scaleFactor);
+
+        // Render astronaut
+        astronaut.render(gl);
+
+        // Reset color to avoid other component being colored
+        gl.glColor3f(1f, 1f, 1f);
+
+        gl.glPopMatrix();
+        gl.glPopMatrix();
+    }
+
     @Override
     public void render(GL2 gl) {
         if (texture == null) {
@@ -150,11 +249,11 @@ public class Earth extends Planet {
         gl.glTranslatef(X, Y, Z); // Move Earth to position
 
         glu.gluSphere(quadric, 0.1f, 64, 64);
-        
+
         glu.gluDeleteQuadric(quadric);
 
         moon.render(gl);
-        
+
 //        gl.glPushMatrix();
 //        
 //        gl.glTranslatef(0f, radius + 1.0f, 0f); // Offset above Earth’s surface
