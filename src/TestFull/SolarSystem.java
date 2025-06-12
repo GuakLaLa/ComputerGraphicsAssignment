@@ -112,17 +112,20 @@ public class SolarSystem implements GLEventListener {
 
             // Look at Earth
             GLU glu = new GLU();
-            glu.gluLookAt(eyeX - 20f, eyeY, eyeZ, pos[0], pos[1], pos[2], 0f, 1f, 0f);
+            glu.gluLookAt(eyeX, eyeY, eyeZ, pos[0], pos[1], pos[2], 0f, 1f, 0f);
 
             earth.updateMoon();
             earth.render(gl);
 
             // Update and render rocket with 15% of original size
             earth.updateRocket();
-            earth.renderRocket(gl, 0.15f);
+            earth.renderRocket(gl, 0.1f);
             
             earth.updateAstronaut();
-            earth.renderAstronaut(gl, 0.7f);
+            earth.renderAstronaut(gl, 0.12f);
+            
+            earth.updateSatellite();
+            earth.renderSatellite(gl, 0.065f);
         } else {
             // Default camera
             gl.glTranslatef(0f, 0f, -70f);
