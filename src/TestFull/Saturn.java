@@ -11,16 +11,16 @@ import com.jogamp.opengl.util.texture.Texture;
  *
  * @author Asus
  */
-public class Saturn extends Planets {
-    
+public class Saturn extends Planet {
+
     private float inclination = -15f;
     private Texture ringTexture;
     private float ringInnerRadius = 0.5f;
     private float ringOuterRadius = 2.5f;
-    
+
     public Saturn(float radius, float distanceFromCenter, float rotationSpeed) {
-        super("/images/saturn.jpg", radius, distanceFromCenter, rotationSpeed, Planets.SelfRotateAxis.Z_Axis);
-        rotationAngles = new float[] {-90, inclination, 0};
+        super("/images/saturn.jpg", radius, distanceFromCenter, rotationSpeed, Planet.SelfRotateAxis.Z_Axis);
+        rotationAngles = new float[]{-90, inclination, 0};
         ringInnerRadius += radius + 0.1f;
         ringOuterRadius += radius + 0.1f;
     }
@@ -35,20 +35,22 @@ public class Saturn extends Planets {
     public void updateRotation() {
         updateRotationDefault();
     }
-    
+
     private void drawRing(GL2 gl) {
-        if(ringTexture == null) {
+        if (ringTexture == null) {
             ringTexture = loadTexture("/images/saturn_rings.jpeg");
         }
-        
+
         final int slices = 100;
         ringTexture.enable(gl);
         ringTexture.bind(gl);
 
         gl.glPushMatrix();
-        
-        gl.glRotatef(orbitalAngle, 0f, 1f, 0f); // Orbital angle
-        gl.glTranslatef(distanceFromCenter, 0f, 0f); // Orbital radius
+
+//        gl.glRotatef(orbitalAngle, 0f, 1f, 0f); // Orbital angle
+//        gl.glTranslatef(distanceFromCenter, 0f, 0f); // Orbital radius
+        gl.glTranslatef(X, Y, Z); // Move Earth to position
+
         gl.glRotatef(-90f, 1f, 0f, 0f); // Align ring in XZ plane
         gl.glRotatef(inclination, 0f, 1f, 0f); // Align ring in XZ plane
 

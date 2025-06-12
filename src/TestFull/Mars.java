@@ -8,8 +8,8 @@ package TestFull;
  *
  * @author Asus
  */
-public class Mars extends Planets {
+public class Mars extends Planet {
     public Mars(float radius, float distanceFromCenter, float rotationSpeed) {
-        super("/images/mars.jpg", radius, distanceFromCenter, rotationSpeed, Planets.SelfRotateAxis.Z_Axis);
+        super("/images/mars.jpg", radius, distanceFromCenter, rotationSpeed, Planet.SelfRotateAxis.Z_Axis);
     }
 }

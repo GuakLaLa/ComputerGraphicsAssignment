@@ -10,7 +10,7 @@ import com.jogamp.opengl.GL2;
  *
  * @author Asus
  */
-public class Jupiter extends Planets {
+public class Jupiter extends Planet {
 
     public Jupiter(float radius, float distanceFromCenter, float rotationSpeed) {
         super("/images/jupiter.jpg", radius, distanceFromCenter, rotationSpeed, SelfRotateAxis.Z_Axis);

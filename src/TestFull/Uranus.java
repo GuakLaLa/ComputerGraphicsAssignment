@@ -8,9 +8,9 @@ package TestFull;
  *
  * @author Asus
  */
-public class Uranus extends Planets {
+public class Uranus extends Planet {
     public Uranus(float radius, float distanceFromCenter, float rotationSpeed) {
-        super("/images/uranus.jpg", radius, distanceFromCenter, rotationSpeed, Planets.SelfRotateAxis.Z_Axis);
+        super("/images/uranus.jpg", radius, distanceFromCenter, rotationSpeed, Planet.SelfRotateAxis.Z_Axis);
         rotationAngles = new float[] {0, 0, 0};
     }
 }
