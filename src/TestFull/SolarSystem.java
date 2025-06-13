@@ -195,6 +195,7 @@ public class SolarSystem implements GLEventListener {
             earth.renderAstronaut(gl, 0.12f);
             earth.updateSatellite();
             earth.renderSatellite(gl, 0.065f);
+
         }
     }
 

@@ -63,34 +63,33 @@ public class Earth extends Planet {
     public void updateRocket() {
         rocket.update();
     }
-
+    
     public void updateSatellite() {
         satellite.update();
     }
-
     public void updateAstronaut() {
         astronaut.update(0.05f);
     }
-
+    
     public void renderRocket(GL2 gl, float scaleFactor) {
         gl.glPushMatrix();
 
         // Move Earth to position
         // Y for offset above Earth's surface
-        gl.glTranslatef(X, Y + radius + 0.5f, Z);
-
+        gl.glTranslatef(X, Y + radius + 1.0f, Z); 
+        
         // Scale the rocket
         gl.glScalef(scaleFactor, scaleFactor, scaleFactor);
-
+        
         // Render rocket
         rocket.draw(gl);
-
+        
         // Reset color to avoid other component being colored
         gl.glColor3f(1f, 1f, 1f);
 
         gl.glPopMatrix();
     }
-
+    
     public void renderSatellite(GL2 gl, float scaleFactor) {
         gl.glPushMatrix();
 
@@ -119,31 +118,24 @@ public class Earth extends Planet {
         gl.glPopMatrix();
 
     }
-
+    
     public void renderAstronaut(GL2 gl, float scaleFactor) {
         gl.glPushMatrix();
 
         // Move Earth to position
         // Y for offset above Earth's surface
-//        gl.glTranslatef(0, 0, 0);
-        gl.glTranslatef(X, Y + radius + 0.3f, Z);
-
-        gl.glPushMatrix();
-
-//        gl.glRotatef(-30, 1f, 0f, 0f);
-        gl.glRotatef(-20, 0f, 1f, 0f);
-        gl.glRotatef(-50, 0f, 0f, 1f);
-
+        gl.glTranslatef(X + 5f, Y + radius + 2f, Z + 1f);
+        gl.glRotatef(120, 0f, 1f, 0f);
+        
         // Scale the astronaut
         gl.glScalef(scaleFactor, scaleFactor, scaleFactor);
-
+        
         // Render astronaut
         astronaut.render(gl);
-
+        
         // Reset color to avoid other component being colored
         gl.glColor3f(1f, 1f, 1f);
 
-        gl.glPopMatrix();
         gl.glPopMatrix();
     }
 
