@@ -191,9 +191,7 @@ public class Astronaut {
         gl.glVertex3f(-0.5f, -0.5f, 0.5f);
         gl.glEnd();
         gl.glPopMatrix();
-        gl.glEnd();
         texture.disable(gl);
-        gl.glPopMatrix();
     }
 
     private void drawJointSphere(GL2 gl) {

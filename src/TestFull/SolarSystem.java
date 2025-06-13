@@ -25,10 +25,12 @@ import javax.swing.JFrame;
  */
 public class SolarSystem implements GLEventListener {
 
+    private static final float earthOrbitalSpeed = 0.8f;
+    
     private List<Planet> planets = new ArrayList<>();
-    private static final Earth earth = new Earth(1.8f, 14f, 5f);
+    private static final Earth earth = new Earth(1.8f, 14.5f, 5f, earthOrbitalSpeed);
     private static boolean isTrackingEarth = false;
-
+    
     public static void main(String[] args) {
         GLProfile profile = GLProfile.get(GLProfile.GL2);
         GLCapabilities capabilities = new GLCapabilities(profile);
@@ -82,14 +84,14 @@ public class SolarSystem implements GLEventListener {
 
         planets.add(new Sun(6f, 0, 0.5f));
 
-        planets.add(new Mercury(0.75f, 7.5f, 5f));
-        planets.add(new Venus(1.7f, 10.2f, 5f));
+        planets.add(new Mercury(0.75f, 6.5f, 5f, earthOrbitalSpeed));
+        planets.add(new Venus(1.7f, 9.5f, 5f, earthOrbitalSpeed));
         planets.add(earth);
-        planets.add(new Mars(1.125f, 17.5f, 5f));
-        planets.add(new Jupiter(4.2f, 23.8f, 5f));
-        planets.add(new Saturn(3.9f, 34.3f, 5.5f));
-        planets.add(new Uranus(2.15f, 41.8f, 6.5f));
-        planets.add(new Neptune(1.94f, 46.8f, 6.5f));
+        planets.add(new Mars(1.125f, 19.3f, 5f, earthOrbitalSpeed));
+        planets.add(new Jupiter(4.2f, 25.2f, 5f, earthOrbitalSpeed));
+        planets.add(new Saturn(3.9f, 34.5f, 5.5f, earthOrbitalSpeed));
+        planets.add(new Uranus(2.15f, 41.8f, 6.5f, earthOrbitalSpeed));
+        planets.add(new Neptune(1.94f, 46.8f, 6.5f, earthOrbitalSpeed));
 
         gl.glClearColor(0, 0, 0, 1);
     }
@@ -112,17 +114,21 @@ public class SolarSystem implements GLEventListener {
 
             // Look at Earth
             GLU glu = new GLU();
-            glu.gluLookAt(eyeX - 20f, eyeY, eyeZ, pos[0], pos[1], pos[2], 0f, 1f, 0f);
+            glu.gluLookAt(eyeX, eyeY, eyeZ, pos[0], pos[1], pos[2], 0f, 1f, 0f);
 
             earth.updateMoon();
             earth.render(gl);
 
             // Update and render rocket with 15% of original size
             earth.updateRocket();
-            earth.renderRocket(gl, 0.15f);
+            earth.renderRocket(gl, 0.1f);
             
             earth.updateAstronaut();
-            earth.renderAstronaut(gl, 0.7f);
+            earth.renderAstronaut(gl, 0.12f);
+            
+            earth.updateSatellite();
+            earth.renderSatellite(gl, 0.065f);
+
         } else {
             // Default camera
             gl.glTranslatef(0f, 0f, -70f);

@@ -9,7 +9,12 @@ package TestFull;
  * @author Asus
  */
 public class Mars extends Planet {
-    public Mars(float radius, float distanceFromCenter, float rotationSpeed) {
+    
+    private float relativeSpeed = 0.81f;
+
+    public Mars(float radius, float distanceFromCenter, float rotationSpeed, float earthOrbitalSpeed) {
         super("/images/mars.jpg", radius, distanceFromCenter, rotationSpeed, Planet.SelfRotateAxis.Z_Axis);
+        this.orbitalSpeed = earthOrbitalSpeed * relativeSpeed;
     }
+    
 }

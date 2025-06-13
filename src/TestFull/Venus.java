@@ -9,8 +9,12 @@ package TestFull;
  * @author Asus
  */
 public class Venus extends Planet {
-    public Venus(float radius, float distanceFromCenter, float rotationSpeed) {
+    
+    private float relativeSpeed = 1.18f;
+
+    public Venus(float radius, float distanceFromCenter, float rotationSpeed, float earthOrbitalSpeed) {
         super("/images/venus.jpg", radius, distanceFromCenter, rotationSpeed, Planet.SelfRotateAxis.Z_Axis);
+        this.orbitalSpeed = earthOrbitalSpeed * relativeSpeed;
         rotationAngles = new float[] {90, 0, 0};
     }
 }

@@ -9,8 +9,12 @@ package TestFull;
  * @author Asus
  */
 public class Uranus extends Planet {
-    public Uranus(float radius, float distanceFromCenter, float rotationSpeed) {
+    
+    private float relativeSpeed = 0.23f;
+
+    public Uranus(float radius, float distanceFromCenter, float rotationSpeed, float earthOrbitalSpeed) {
         super("/images/uranus.jpg", radius, distanceFromCenter, rotationSpeed, Planet.SelfRotateAxis.Z_Axis);
+        this.orbitalSpeed = earthOrbitalSpeed * relativeSpeed;
         rotationAngles = new float[] {0, 0, 0};
     }
 }
