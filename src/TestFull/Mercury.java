@@ -11,8 +11,11 @@ import com.jogamp.opengl.GL2;
  * @author Asus
  */
 public class Mercury extends Planet {
+    
+    private float relativeSpeed = 1.6f;
 
-    public Mercury(float radius, float distanceFromCenter, float rotationSpeed) {
+    public Mercury(float radius, float distanceFromCenter, float rotationSpeed, float earthOrbitalSpeed) {
         super("/images/mercury.jpg", radius, distanceFromCenter, rotationSpeed, Planet.SelfRotateAxis.Z_Axis);
+        this.orbitalSpeed = earthOrbitalSpeed * relativeSpeed;
     }
 }
