@@ -10,12 +10,15 @@ import com.jogamp.opengl.glu.GLUquadric;
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureIO;
 import java.io.InputStream;
+import java.util.Random;
 
 /**
  *
  * @author Asus
  */
 public class Planet {
+    
+    private static final Random random = new Random();
 
     protected class SelfRotateAxis {
 
@@ -26,8 +29,9 @@ public class Planet {
     protected float X, Y, Z;
     protected float radius, distanceFromCenter;
     protected float rotationSpeed;
-    protected float orbitalAngle = 30f;
+    protected float orbitalAngle = random.nextFloat(0, 90);
     protected float orbitalSpeed = 0.75f;
+//    protected float relativeSpeed = 1f;
     protected float[] rotationAngles = {0, 0, 0}; // x, y, z
     protected char rotateAxis = SelfRotateAxis.Y_Axis;
     protected String texturePath;
@@ -60,6 +64,15 @@ public class Planet {
             this.rotationAngles = new float[]{-90, 0, 0};
         }
     }
+    
+//    public Planet(String texturePath, float radius, float distanceFromCenter, float rotationSpeed, float orbitSpeed, char rotateAxis) {
+//        this(texturePath, radius, distanceFromCenter, rotationSpeed, rotateAxis);
+//        this.orbitalSpeed = orbitSpeed;
+//    }
+//    
+//    protected void setRelativeOrbitalSpeed(float earthOrbitSpeed) {
+//        this.orbitalSpeed = earthOrbitSpeed * ;
+//    }
 
     protected Texture loadTexture(String path) {
         try (InputStream stream = getClass().getResourceAsStream(path)) {

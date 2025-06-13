@@ -12,7 +12,10 @@ import com.jogamp.opengl.GL2;
  */
 public class Jupiter extends Planet {
 
-    public Jupiter(float radius, float distanceFromCenter, float rotationSpeed) {
-        super("/images/jupiter.jpg", radius, distanceFromCenter, rotationSpeed, SelfRotateAxis.Z_Axis);
+    private float relativeSpeed = 0.44f;
+
+    public Jupiter(float radius, float distanceFromCenter, float rotationSpeed, float earthOrbitalSpeed) {
+        super("/images/jupiter.jpg", radius, distanceFromCenter, rotationSpeed, Planet.SelfRotateAxis.Z_Axis);
+        this.orbitalSpeed = earthOrbitalSpeed * relativeSpeed;
     }
 }
