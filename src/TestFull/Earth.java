@@ -23,8 +23,9 @@ public class Earth extends Planet {
     private Astronaut astronaut;
     private Satellite satellite;
 
-    public Earth(float radius, float distanceFromCenter, float rotationSpeed) {
+    public Earth(float radius, float distanceFromCenter, float rotationSpeed, float orbitSpeed) {
         super("/images/earth.jpg", radius, distanceFromCenter, rotationSpeed, Planet.SelfRotateAxis.Z_Axis);
+        this.orbitalAngle = orbitSpeed;
         moon = new Moon(0.5f, radius + 0.8f, 5f);
         rocket = new Rocket();
         astronaut = new Astronaut();

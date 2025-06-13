@@ -13,13 +13,15 @@ import com.jogamp.opengl.util.texture.Texture;
  */
 public class Saturn extends Planet {
 
+    private float relativeSpeed = 0.33f;
     private float inclination = -15f;
     private Texture ringTexture;
     private float ringInnerRadius = 0.5f;
     private float ringOuterRadius = 2.5f;
 
-    public Saturn(float radius, float distanceFromCenter, float rotationSpeed) {
+    public Saturn(float radius, float distanceFromCenter, float rotationSpeed, float earthOrbitalSpeed) {
         super("/images/saturn.jpg", radius, distanceFromCenter, rotationSpeed, Planet.SelfRotateAxis.Z_Axis);
+        this.orbitalSpeed = earthOrbitalSpeed * relativeSpeed;
         rotationAngles = new float[]{-90, inclination, 0};
         ringInnerRadius += radius + 0.1f;
         ringOuterRadius += radius + 0.1f;
