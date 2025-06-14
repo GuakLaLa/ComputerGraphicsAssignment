@@ -65,12 +65,12 @@ public class Satellite implements GLEventListener {
 
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
         gl.glLoadIdentity();
-        gl.glTranslatef(0.0f, 0.0f, -10.0f);
+        gl.glTranslatef(0.0f, 0.0f, -20.0f);
 
         rotateAngle += 0.5f;
-        gl.glRotatef(20.0f, 1.0f, 0.0f, 0.0f); // 向上倾斜 20 度（绕 X 轴）
-        gl.glRotatef(15.0f, 0.0f, 0.0f, 1.0f); // 侧倾 15 度（绕 Z 轴）
-        gl.glRotatef(rotateAngle, 0.0f, 1.0f, 0.0f); // 旋转动画（绕 Y 轴）
+        gl.glRotatef(20.0f, 1.0f, 0.0f, 0.0f); // Tilt up 20 degrees (around X-axis)
+        gl.glRotatef(15.0f, 0.0f, 0.0f, 1.0f);  // Side tilt 15 degrees (around Z-axis)
+        gl.glRotatef(rotateAngle, 0.0f, 1.0f, 0.0f); // Rotation animation (around Y-axis)
 
 
         drawSatellite(gl);
@@ -81,31 +81,32 @@ public class Satellite implements GLEventListener {
     private void drawSatellite(GL2 gl) {
         // Draw Body with bodyTexture
         gl.glPushMatrix();
-        gl.glScalef(1.5f, 1.0f, 1.0f);
-        if (bodyTexture != null) bodyTexture.bind(gl);
-        drawTexturedCube(gl);
+        gl.glScalef(1.5f, 1.0f, 1.0f); // Scale the body to make it wider
+        if (bodyTexture != null) bodyTexture.bind(gl); // Bind the body texture if it's available
+        drawTexturedCube(gl); // Draw the main body as a textured cube
         gl.glPopMatrix();
 
-        // Left Panels (2 pieces)
+        // Left Panels (3 pieces)
         float panelSpacing = 4.0f;
         float panelWidth = 2.0f;
 
         for (int i = 0; i < 3; i++) {
             gl.glPushMatrix();
-            gl.glTranslatef(-3.5f - i * panelSpacing, 0.0f, 0.0f);
-            gl.glScalef(panelWidth, 0.1f, 1.0f);
+            gl.glTranslatef(-3.5f - i * panelSpacing, 0.0f, 0.0f); // Move left from body
+
+            gl.glScalef(panelWidth, 0.1f, 1.0f); // Scale to look like flat solar panels
             if (panelTexture != null) panelTexture.bind(gl);
-            drawTexturedCube(gl);
+            drawTexturedCube(gl); // Draw each panel
             gl.glPopMatrix();
         }
 
         // Right Panels (2 pieces)
         for (int i = 0; i < 3; i++) {
             gl.glPushMatrix();
-            gl.glTranslatef(3.5f + i * panelSpacing, 0.0f, 0.0f);
-            gl.glScalef(panelWidth, 0.1f, 1.0f);
+            gl.glTranslatef(3.5f + i * panelSpacing, 0.0f, 0.0f); // Move left from bod
+            gl.glScalef(panelWidth, 0.1f, 1.0f); // Scale to look like flat solar panels
             if (panelTexture != null) panelTexture.bind(gl);
-            drawTexturedCube(gl);
+            drawTexturedCube(gl); // Draw each panel
             gl.glPopMatrix();        }
     }
 
