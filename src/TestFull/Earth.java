@@ -59,9 +59,11 @@ public class Earth extends Planet {
         moon.orbitalSpeed = this.orbitalSpeed * 2;
         moon.updateRotation();
     }
-<<<<<<< HEAD
-=======
-    
+
+     public void updateSatellite() {
+        satellite.update();
+    }
+     
     public void updateRocket() {
         rocket.update();
     }
@@ -108,19 +110,6 @@ public class Earth extends Planet {
 
         gl.glPopMatrix();
     }
-
-
->>>>>>> fb338f694fe5d7cfbe2e4fd32422f696af2ca126
-
-
-
-
-    public void updateSatellite() {
-        satellite.update();
-    }
-
- 
-
 
     public void renderSatellite(GL2 gl, float scaleFactor) {
         gl.glPushMatrix();
