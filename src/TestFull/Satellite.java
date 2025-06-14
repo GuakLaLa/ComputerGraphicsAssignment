@@ -36,16 +36,20 @@ public class Satellite {
     }
 
     public void render(GL2 gl) {
+        gl.glPushAttrib(GL2.GL_ENABLE_BIT | GL2.GL_LIGHTING_BIT);
+        gl.glDisable(GL2.GL_LIGHTING); // Disable lighting temporaril
+        
         if(!textureInit) {
             loadTextures(gl);
         }
         gl.glEnable(GL2.GL_DEPTH_TEST);
         gl.glEnable(GL2.GL_TEXTURE_2D);
+        
         // Self rotation
         gl.glPushMatrix();
-        gl.glRotatef(20.0f, 1.0f, 0.0f, 0.0f); // 向上倾斜 20 度（绕 X 轴）
-        gl.glRotatef(15.0f, 0.0f, 0.0f, 1.0f); // 侧倾 15 度（绕 Z 轴）
-        gl.glRotatef(rotateAngle, 0.0f, 1.0f, 0.0f); // 旋转动画（绕 Y 轴）
+        gl.glRotatef(20.0f, 1.0f, 0.0f, 0.0f); // Tilt up 20 degrees (around X-axis)
+        gl.glRotatef(15.0f, 0.0f, 0.0f, 1.0f); // Side tilt 15 degrees (around Z-axis)
+        gl.glRotatef(rotateAngle, 0.0f, 1.0f, 0.0f); // Rotation animation (around Y-axis)
 
         // Draw Body with bodyTexture
         gl.glPushMatrix();
@@ -56,7 +60,7 @@ public class Satellite {
         drawTexturedCube(gl);
         gl.glPopMatrix();
 
-        // Left Panels (2 pieces)
+        // Left Panels (3 pieces)
         float panelSpacing = 4.0f;
         float panelWidth = 2.0f;
 
@@ -71,7 +75,7 @@ public class Satellite {
             gl.glPopMatrix();
         }
 
-        // Right Panels (2 pieces)
+        // Right Panels (3 pieces)
         for (int i = 0; i < 3; i++) {
             gl.glPushMatrix();
             gl.glTranslatef(3.5f + i * panelSpacing, 0.0f, 0.0f);
