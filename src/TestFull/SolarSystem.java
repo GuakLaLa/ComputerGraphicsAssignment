@@ -8,12 +8,16 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.util.*;
 
+import com.jogamp.opengl.util.texture.Texture;
+import com.jogamp.opengl.util.texture.TextureIO;
+
 public class SolarSystem implements GLEventListener {
 
     private static final float earthOrbitalSpeed = 0.8f;
     private List<Planet> planets = new ArrayList<>();
     private static final Earth earth = new Earth(1.8f, 14.5f, 5f, earthOrbitalSpeed);
-
+    private Texture galaxyTexture; // to add background as galaxy
+    
     // Camera control
     private boolean isTrackingEarth = false;
     private boolean isTransitioning = false;
@@ -87,6 +91,14 @@ public class SolarSystem implements GLEventListener {
         gl.glEnable(GL2.GL_DEPTH_TEST);
         gl.glEnable(GL2.GL_TEXTURE_2D);
         gl.glClearColor(0, 0, 0, 1);
+        
+        //to apply the background texture
+        try {
+            galaxyTexture = TextureIO.newTexture(getClass().getResourceAsStream("/images/galaxy.jpg"), false, "jpg");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
         // Initialize solar system
         planets.add(new Sun(6f, 0, 0.5f));
@@ -176,6 +188,7 @@ public class SolarSystem implements GLEventListener {
     }
 
     private void renderScene(GL2 gl) {
+        drawSkybox(gl);
         if (!isTrackingEarth || (isTrackingEarth && transitionProgress < TRANSITION_DURATION - 0.5f)) {
             // Render full solar system
             for (Planet planet : planets) {
@@ -198,6 +211,66 @@ public class SolarSystem implements GLEventListener {
 
         }
     }
+    
+    private void drawSkybox(GL2 gl) {
+    float size = 200f;
+    if (galaxyTexture != null) galaxyTexture.bind(gl);
+
+    // Save all relevant states
+    gl.glPushAttrib(GL2.GL_ENABLE_BIT | GL2.GL_CURRENT_BIT | GL2.GL_LIGHTING_BIT);
+
+    gl.glDisable(GL2.GL_LIGHTING);
+    gl.glDisable(GL2.GL_DEPTH_TEST); // Optional: prevents z-fighting
+    gl.glEnable(GL2.GL_TEXTURE_2D);
+
+    gl.glPushMatrix();
+
+    gl.glBegin(GL2.GL_QUADS);
+
+    // Front
+    gl.glTexCoord2f(0f, 0f); gl.glVertex3f(-size, -size, size);
+    gl.glTexCoord2f(1f, 0f); gl.glVertex3f(size, -size, size);
+    gl.glTexCoord2f(1f, 1f); gl.glVertex3f(size, size, size);
+    gl.glTexCoord2f(0f, 1f); gl.glVertex3f(-size, size, size);
+
+    // Back
+    gl.glTexCoord2f(0f, 0f); gl.glVertex3f(size, -size, -size);
+    gl.glTexCoord2f(1f, 0f); gl.glVertex3f(-size, -size, -size);
+    gl.glTexCoord2f(1f, 1f); gl.glVertex3f(-size, size, -size);
+    gl.glTexCoord2f(0f, 1f); gl.glVertex3f(size, size, -size);
+
+    // Left
+    gl.glTexCoord2f(0f, 0f); gl.glVertex3f(-size, -size, -size);
+    gl.glTexCoord2f(1f, 0f); gl.glVertex3f(-size, -size, size);
+    gl.glTexCoord2f(1f, 1f); gl.glVertex3f(-size, size, size);
+    gl.glTexCoord2f(0f, 1f); gl.glVertex3f(-size, size, -size);
+
+    // Right
+    gl.glTexCoord2f(0f, 0f); gl.glVertex3f(size, -size, size);
+    gl.glTexCoord2f(1f, 0f); gl.glVertex3f(size, -size, -size);
+    gl.glTexCoord2f(1f, 1f); gl.glVertex3f(size, size, -size);
+    gl.glTexCoord2f(0f, 1f); gl.glVertex3f(size, size, size);
+
+    // Top
+    gl.glTexCoord2f(0f, 0f); gl.glVertex3f(-size, size, size);
+    gl.glTexCoord2f(1f, 0f); gl.glVertex3f(size, size, size);
+    gl.glTexCoord2f(1f, 1f); gl.glVertex3f(size, size, -size);
+    gl.glTexCoord2f(0f, 1f); gl.glVertex3f(-size, size, -size);
+
+    // Bottom
+    gl.glTexCoord2f(0f, 0f); gl.glVertex3f(-size, -size, -size);
+    gl.glTexCoord2f(1f, 0f); gl.glVertex3f(size, -size, -size);
+    gl.glTexCoord2f(1f, 1f); gl.glVertex3f(size, -size, size);
+    gl.glTexCoord2f(0f, 1f); gl.glVertex3f(-size, -size, size);
+
+    gl.glEnd();
+
+    gl.glPopMatrix();
+
+    // Restore OpenGL state
+    gl.glPopAttrib();
+}
+
 
     @Override
     public void reshape(GLAutoDrawable drawable, int x, int y, int w, int h) {
