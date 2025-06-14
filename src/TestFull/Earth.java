@@ -60,13 +60,6 @@ public class Earth extends Planet {
         moon.updateRotation();
     }
 
-<<<<<<< HEAD
-=======
-     public void updateSatellite() {
-        satellite.update();
-    }
-     
->>>>>>> tzw
     public void updateRocket() {
         rocket.update();
     }
@@ -96,30 +89,7 @@ public class Earth extends Planet {
 
         gl.glPopMatrix();
     }
-    
-<<<<<<< HEAD
-=======
-    public void renderAstronaut(GL2 gl, float scaleFactor) {
-        gl.glPushMatrix();
 
-        // Move Earth to position
-        // Y for offset above Earth's surface
-        gl.glTranslatef(X + 5f, Y + radius + 2f, Z + 1f);
-        gl.glRotatef(120, 0f, 1f, 0f);
-        
-        // Scale the astronaut
-        gl.glScalef(scaleFactor, scaleFactor, scaleFactor);
-        
-        // Render astronaut
-        astronaut.render(gl);
-        
-        // Reset color to avoid other component being colored
-        gl.glColor3f(1f, 1f, 1f);
-
-        gl.glPopMatrix();
-    }
-
->>>>>>> tzw
     public void renderSatellite(GL2 gl, float scaleFactor) {
         gl.glPushMatrix();
 
