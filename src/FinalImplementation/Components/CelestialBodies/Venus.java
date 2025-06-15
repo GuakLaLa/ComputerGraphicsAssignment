@@ -4,10 +4,6 @@
  */
 package FinalImplementation.Components.CelestialBodies;
 
-/**
- *
- * @author Asus
- */
 public class Venus extends Planet {
     
     private static final float RELATIVE_SPEED = 1.18f;

@@ -63,7 +63,6 @@ public class Earth extends Planet {
         // Move Earth to position
         // Y for offset above Earth's surface
         gl.glTranslatef(X, Y + radius + 0.5f, Z);
-//        gl.glRotatef(180, 0f, 1f, 0f);
 
         // Scale the rocket
         gl.glScalef(scaleFactor, scaleFactor, scaleFactor);
@@ -82,7 +81,7 @@ public class Earth extends Planet {
 
         // Move Earth to position
         // Y for offset above Earth's surface
-        gl.glTranslatef(X + 2f, Y + 4f, Z + 3.5f);
+        gl.glTranslatef(X, Y + 2.5f, Z + 1.5f);
         gl.glRotatef(180, 0f, 1f, 0f);
 
         gl.glPushMatrix();
@@ -114,7 +113,6 @@ public class Earth extends Planet {
 
         gl.glPushMatrix();
 
-//        gl.glRotatef(-30, 1f, 0f, 0f);
         gl.glRotatef(-20, 0f, 1f, 0f);
         gl.glRotatef(-50, 0f, 0f, 1f);
 
