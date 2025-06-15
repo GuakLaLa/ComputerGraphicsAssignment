@@ -67,19 +67,6 @@ public class SolarSystem implements GLEventListener {
         startTransition();
     }
     
-//    public boolean isTrackingSun() {
-//        return currentTrack == 0;
-//    }
-//    
-//    public boolean isTrackingEarth() {
-//        return currentTrack == 1;
-//    }
-//    
-//    public boolean isTrackingAstronaut() {
-//        return currentTrack == 2;
-//    }
-
-//    private final float[] astronautPosition = {0f, 0.5f, 1.5f};
     // Window dimensions
     private int width = 1000;
     private int height = 800;
