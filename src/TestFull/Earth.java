@@ -89,7 +89,7 @@ public class Earth extends Planet {
 
         gl.glPopMatrix();
     }
-    
+
     public void renderSatellite(GL2 gl, float scaleFactor) {
         gl.glPushMatrix();
 
