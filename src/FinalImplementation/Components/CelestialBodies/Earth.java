@@ -22,7 +22,7 @@ public class Earth extends Planet {
     public Earth(float radius, float distanceFromCenter, float rotationSpeed) {
         super("/images/earth.jpg", radius, distanceFromCenter, rotationSpeed, 1);
         moon = new Moon(0.5f, radius + 0.8f, 5f);
-        
+
         moon.orbitalSpeed = this.orbitalSpeed * 6;
     }
 
@@ -131,6 +131,10 @@ public class Earth extends Planet {
         gl.glPopMatrix();
     }
 
+    public float[] getAstronautPosition() {
+        return new float[]{X, Y + radius + 0.3f, Z};
+    }
+
     @Override
     public void render(GL2 gl) {
         if (texture == null) {
@@ -164,19 +168,19 @@ public class Earth extends Planet {
         if (texture != null) {
             texture.disable(gl);
         }
-        
+
         glu.gluDeleteQuadric(quadric);
         gl.glPopMatrix();
 
         // Render moon
         gl.glPushMatrix();
-        
+
         // Move to Earth position
-        gl.glTranslatef(X, Y, Z); 
+        gl.glTranslatef(X, Y, Z);
 
         // Draw the moon
         moon.render(gl);
-        
+
         gl.glPopMatrix();
     }
 }
