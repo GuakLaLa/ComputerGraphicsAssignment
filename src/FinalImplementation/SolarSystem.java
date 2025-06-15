@@ -30,6 +30,7 @@ public class SolarSystem implements GLEventListener {
 
     // Camera control
     private boolean isTrackingEarth = false;
+    private boolean isTrackingAstronaut = false;
     private boolean isTransitioning = false;
     private float transitionProgress = 0f;
     private final float TRANSITION_DURATION = 2.0f;
@@ -37,12 +38,48 @@ public class SolarSystem implements GLEventListener {
     private float cameraFOV = 45f;
     private float[] lookAtPosition = {0f, 0f, 0f};
 
-    // Add these class variables
-    private final float earthViewDistance = 15f; // Default zoom distance for Earth view
     private final float sunViewDistance = 70f;   // Default distance for Sun view
-    private final float earthViewFOV = 40f;      // Narrow FOV for zoomed-in view
-    private final float sunViewFOV = 35f;        // Wider FOV for solar system view
+    private final float earthViewDistance = 15f; // Default zoom distance for Earth view
+    private final float astronautViewDistance = 5f; // Zoom distance for astronaut view
 
+    private final float sunViewFOV = 50f;        // Wider FOV for solar system view
+    private final float earthViewFOV = 40f;      // Narrow FOV for zoomed-in view
+    private final float astronautViewFOV = 30f;      // Narrow FOV for zoomed-in view
+
+    private int currentTrack = 0;
+
+    public void trackNext() {
+        currentTrack = (currentTrack + 1) % 3;
+        switch(currentTrack) {
+            case 0 -> {
+                isTrackingEarth = false;
+                isTrackingAstronaut = false;
+            }
+            case 1 -> {
+                isTrackingEarth = true;
+                isTrackingAstronaut = false;
+            }
+            case 2 -> {
+                isTrackingEarth = true;
+                isTrackingAstronaut = true;
+            }
+        }
+        startTransition();
+    }
+    
+//    public boolean isTrackingSun() {
+//        return currentTrack == 0;
+//    }
+//    
+//    public boolean isTrackingEarth() {
+//        return currentTrack == 1;
+//    }
+//    
+//    public boolean isTrackingAstronaut() {
+//        return currentTrack == 2;
+//    }
+
+//    private final float[] astronautPosition = {0f, 0.5f, 1.5f};
     // Window dimensions
     private int width = 1000;
     private int height = 800;
@@ -78,7 +115,7 @@ public class SolarSystem implements GLEventListener {
                     }
                 }
                 if (e.getKeyCode() == KeyEvent.VK_SPACE && !solarSystem.isTransitioning) {
-                    solarSystem.toggleTracking();
+                    solarSystem.trackNext();
                 }
             }
         });
@@ -92,8 +129,7 @@ public class SolarSystem implements GLEventListener {
         new FPSAnimator(canvas, 60).start();
     }
 
-    private void toggleTracking() {
-        isTrackingEarth = !isTrackingEarth;
+    private void startTransition() {
         isTransitioning = true;
         transitionProgress = 0f;
     }
@@ -153,8 +189,15 @@ public class SolarSystem implements GLEventListener {
 
             float step = smoothStep(transitionProgress / TRANSITION_DURATION);
             float[] earthPos = earth.getPosition();
+            float[] astronautPos = earth.getAstronautPosition();
 
-            if (isTrackingEarth) {
+            if (isTrackingAstronaut) {
+                cameraDistance = lerp(earthViewDistance, astronautViewDistance, step);
+                cameraFOV = lerp(earthViewFOV, astronautViewFOV, step);
+                lookAtPosition[0] = lerp(earthPos[0], astronautPos[0], step);
+                lookAtPosition[1] = lerp(earthPos[1], astronautPos[0], step);
+                lookAtPosition[2] = lerp(earthPos[2], astronautPos[0], step);
+            } else if (isTrackingEarth) {
                 cameraDistance = lerp(sunViewDistance, earthViewDistance, step);
                 cameraFOV = lerp(sunViewFOV, earthViewFOV, step);
                 lookAtPosition[0] = lerp(0, earthPos[0], step);
@@ -163,9 +206,9 @@ public class SolarSystem implements GLEventListener {
             } else {
                 cameraDistance = lerp(earthViewDistance, sunViewDistance, step);
                 cameraFOV = lerp(earthViewFOV, sunViewFOV, step);
-                lookAtPosition[0] = lerp(earthPos[0], 0, step);
-                lookAtPosition[1] = lerp(earthPos[1], 0, step);
-                lookAtPosition[2] = lerp(earthPos[2], 0, step);
+                lookAtPosition[0] = lerp(astronautPos[0], 0, step);
+                lookAtPosition[1] = lerp(astronautPos[1], 0, step);
+                lookAtPosition[2] = lerp(astronautPos[2], 0, step);
             }
         }
     }
@@ -180,8 +223,25 @@ public class SolarSystem implements GLEventListener {
         // Set up view
         GLU glu = new GLU();
 
-        // View when focusing on Earth
-        if (isTrackingEarth) {
+        if (isTrackingAstronaut) {
+            float[] astronautPos = earth.getAstronautPosition();
+
+            // Side view
+            float xOffset = cameraDistance * 0.5f;
+            // Height
+            float yOffset = cameraDistance * 0.55f;
+            // Distance behind
+            float zOffset = cameraDistance * 0.6f;
+
+            glu.gluLookAt(
+                    astronautPos[0] + xOffset,
+                    astronautPos[1] + yOffset,
+                    astronautPos[2] + zOffset,
+                    astronautPos[0], astronautPos[1], astronautPos[2],
+                    0, 1, 0
+            );
+        } // View when focusing on Earth
+        else if (isTrackingEarth) {
             float[] earthPos = earth.getPosition();
 
             // Side view
@@ -296,10 +356,10 @@ public class SolarSystem implements GLEventListener {
     private void renderScene(GL2 gl) {
         // Render background
         renderBackground(gl);
-        
+
         // Render full solar system when focusing on Sun
         // Continue render full solar system until 0.5s before completely focus on Earth
-        if (!isTrackingEarth || (isTrackingEarth && transitionProgress < TRANSITION_DURATION - 0.5f)) {
+        if (!isTrackingEarth || (isTrackingEarth && !isTrackingAstronaut && transitionProgress < TRANSITION_DURATION - 0.5f)) {
             // Render full solar system
             for (Planet body : celestialBodies) {
                 body.updateRotation();
