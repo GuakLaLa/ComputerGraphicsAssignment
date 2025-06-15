@@ -4,10 +4,6 @@
  */
 package FinalImplementation.Components.CelestialBodies;
 
-/**
- *
- * @author Asus
- */
 public class Uranus extends Planet {
     
     private static final float RELATIVE_SPEED = 0.23f;
